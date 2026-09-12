@@ -1,0 +1,245 @@
+.likes-page-root {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.84rem;
+  color: var(--text-muted);
+  width: fit-content;
+}
+
+.back-link:hover {
+  color: var(--text-primary);
+}
+
+/* Header Card */
+.likes-header-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 18px;
+}
+
+.likes-header-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.likes-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.likes-meta {
+  font-size: 0.84rem;
+  color: var(--text-muted);
+}
+
+.likes-play-all-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--accent);
+  color: var(--accent-contrast);
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.86rem;
+  font-weight: 600;
+  width: fit-content;
+  margin-top: 6px;
+}
+
+.likes-play-all-btn:hover {
+  opacity: 0.9;
+}
+
+/* Empty State */
+.likes-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 20px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  text-align: center;
+}
+
+.empty-head {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 10px 0 4px;
+}
+
+.empty-sub {
+  font-size: 0.84rem;
+  color: var(--text-muted);
+  max-width: 360px;
+  margin-bottom: 16px;
+}
+
+.explore-btn {
+  display: inline-block;
+  background-color: var(--bg-card-hover);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 0.84rem;
+}
+
+.explore-btn:hover {
+  background-color: var(--border-subtle);
+}
+
+/* Table */
+.likes-list-wrap {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-card);
+  overflow-x: auto;
+}
+
+.likes-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.86rem;
+}
+
+.likes-table th {
+  padding: 10px 12px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.likes-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+}
+
+.likes-row:hover {
+  background-color: var(--bg-card-hover);
+}
+
+.likes-row.active {
+  background-color: var(--bg-card-hover);
+}
+
+.track-flex {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.track-cover {
+  width: 36px;
+  height: 36px;
+  border-radius: 3px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background-color: var(--bg-main);
+}
+
+.track-meta {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.track-title {
+  color: var(--text-primary);
+  font-weight: 500;
+  font-size: 0.86rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.track-artist {
+  color: var(--text-muted);
+  font-size: 0.76rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.genre-badge {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.remove-like-btn {
+  color: var(--text-muted);
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.remove-like-btn:hover {
+  color: var(--danger);
+}
+
+/* Responsive */
+@media (max-width: 680px) {
+  .likes-header-card {
+    padding: 14px;
+  }
+
+  .likes-title {
+    font-size: 1.2rem;
+  }
+
+  .likes-meta {
+    font-size: 0.78rem;
+  }
+
+  .likes-play-all-btn {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+
+  .th-album,
+  .td-album,
+  .th-genre,
+  .td-genre {
+    display: none;
+  }
+
+  .likes-table th,
+  .likes-table td {
+    padding: 8px 8px;
+    font-size: 0.8rem;
+  }
+
+
+  .track-cover {
+    width: 32px;
+    height: 32px;
+  }
+
+  .track-title {
+    font-size: 0.82rem;
+  }
+
+  .track-artist {
+    font-size: 0.72rem;
+  }
+}
+

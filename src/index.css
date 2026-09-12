@@ -1,0 +1,140 @@
+:root {
+  --bg-main: #0b0b0e;
+  --bg-surface: #121216;
+  --bg-card: #18181f;
+  --bg-card-hover: #202029;
+  --bg-input: #1a1a22;
+  --border-subtle: #24242e;
+  --border-active: #383847;
+  --text-primary: #f4f4f6;
+  --text-secondary: #9e9ea9;
+  --text-muted: #656573;
+  --accent: #ffffff;
+  --accent-contrast: #0b0b0e;
+  --danger: #e05252;
+  --tag-bg: #20202a;
+  --icon-box-bg: #202028;
+  --heart-box-bg: #221a1d;
+  --heart-box-border: #3d282e;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-full: 9999px;
+  --player-height: 84px;
+  --sidebar-width: 240px;
+  --navbar-height: 60px;
+  --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s ease;
+}
+
+@media (max-width: 860px) {
+  :root {
+    --sidebar-width: 0px;
+    --navbar-height: 56px;
+    --player-height: 76px;
+  }
+}
+
+@media (max-width: 560px) {
+  :root {
+    --sidebar-width: 0px;
+    --navbar-height: 52px;
+    --player-height: 72px;
+  }
+}
+
+
+
+
+/* Muted, Soft Gray Light Mode (Ko'zni charchatmaydigan seriy minimalist tuslar) */
+[data-theme="light"] {
+  --bg-main: #dfdfe4;
+  --bg-surface: #e7e7ec;
+  --bg-card: #ececf0;
+  --bg-card-hover: #e0e1e6;
+  --bg-input: #e2e3e8;
+  --border-subtle: #cfd1d8;
+  --border-active: #b8bbc4;
+  --text-primary: #1c2029;
+  --text-secondary: #505663;
+  --text-muted: #747b8a;
+  --accent: #222632;
+  --accent-contrast: #ececf0;
+  --danger: #c24141;
+  --tag-bg: #dadce3;
+  --icon-box-bg: #d7d9e1;
+  --heart-box-bg: #e3dedf;
+  --heart-box-border: #cec8ca;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  height: 100%;
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  transition: background-color var(--transition-normal), color var(--transition-normal);
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-main);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+  outline: none;
+}
+
+input {
+  font-family: inherit;
+  outline: none;
+}
+
+/* Custom Minimalist Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-main);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-subtle);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-active);
+}
+
+/* Selection */
+::selection {
+  background-color: var(--border-active);
+  color: var(--text-primary);
+}

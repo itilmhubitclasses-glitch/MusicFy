@@ -1,0 +1,139 @@
+.sidebar-root {
+  width: var(--sidebar-width);
+  height: calc(100vh - var(--navbar-height) - var(--player-height));
+  position: sticky;
+  top: var(--navbar-height);
+  background-color: var(--bg-surface);
+  border-right: 1px solid var(--border-subtle);
+  padding: 20px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  flex-shrink: 0;
+  overflow-y: auto;
+}
+
+.sidebar-section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sidebar-heading {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  color: var(--text-muted);
+  padding: 0 8px;
+  margin-bottom: 6px;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.sidebar-link:hover {
+  color: var(--text-primary);
+  background-color: var(--bg-card-hover);
+}
+
+.sidebar-link.active {
+  color: var(--text-primary);
+  background-color: var(--bg-card-hover);
+  font-weight: 600;
+}
+
+.sidebar-icon {
+  flex-shrink: 0;
+  color: var(--text-muted);
+}
+
+.sidebar-link:hover .sidebar-icon,
+.sidebar-link.active .sidebar-icon {
+  color: var(--text-primary);
+}
+
+.sidebar-link .like-icon {
+  color: #c47171;
+}
+
+.sidebar-badge {
+  margin-left: auto;
+  font-size: 0.7rem;
+  background-color: var(--border-subtle);
+  padding: 1px 6px;
+  border-radius: var(--radius-full);
+  color: var(--text-secondary);
+}
+
+/* Genre List */
+.genre-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.genre-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 0.86rem;
+  color: var(--text-secondary);
+  text-align: left;
+  width: 100%;
+}
+
+.genre-item:hover {
+  color: var(--text-primary);
+  background-color: var(--bg-card-hover);
+}
+
+.genre-item.active {
+  color: var(--text-primary);
+  background-color: var(--bg-card-hover);
+  font-weight: 600;
+}
+
+.genre-icon {
+  flex-shrink: 0;
+  color: var(--text-muted);
+}
+
+.genre-item.active .genre-icon {
+  color: var(--text-primary);
+}
+
+.sidebar-icon-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-badge-mini {
+  display: none;
+}
+
+@media (max-width: 860px) {
+  .sidebar-root {
+    display: none !important;
+  }
+}
+
+
+
