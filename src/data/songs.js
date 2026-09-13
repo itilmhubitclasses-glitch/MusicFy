@@ -238,6 +238,126 @@ export const SONGS = [
     "durationFormatted": "1:00",
     "genre": "Hip-Hop/Rap",
     "year": 2021
+  },
+  {
+    "id": 21,
+    "title": "FATALITY",
+    "artist": "Kordhell",
+    "album": "FATALITY - Single",
+    "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/bc/74/ad/bc74ad6b-eaff-fe9f-f82a-62b648689178/196626898654.jpg/600x600bb.jpg",
+    "audioUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/fc/80/c2/fc80c2c4-6f93-16eb-4fe9-093de7f6fce8/mzaf_16931426514840362026.plus.aac.p.m4a",
+    "duration": 60,
+    "durationFormatted": "1:00",
+    "genre": "Phonk",
+    "year": 2022
+  },
+  {
+    "id": 22,
+    "title": "METAMORPHOSIS (Remix)",
+    "artist": "INTERWORLD & Benny the Butcher",
+    "album": "METAMORPHOSIS (Remix) - Single",
+    "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/b6/cf/d9/b6cfd931-53d8-4d61-f7e6-26938e5f1144/197190164596.jpg/600x600bb.jpg",
+    "audioUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/56/b0/78/56b0780a-d713-3419-3a77-eb2e2f0434bb/mzaf_11728172958677917884.plus.aac.p.m4a",
+    "duration": 60,
+    "durationFormatted": "1:00",
+    "genre": "Phonk",
+    "year": 2023
+  },
+  {
+    "id": 23,
+    "title": "Flare",
+    "artist": "Hensonn",
+    "album": "Flare - Single",
+    "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/52/97/d7/5297d7ab-f241-e727-b590-b9496a941625/197187206056.jpg/600x600bb.jpg",
+    "audioUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/4e/21/08/4e210899-7154-f491-ed31-426784bb54d2/mzaf_1807394955855439771.plus.aac.p.m4a",
+    "duration": 60,
+    "durationFormatted": "1:00",
+    "genre": "Phonk",
+    "year": 2022
+  },
+  {
+    "id": 24,
+    "title": "Murder in My Mind",
+    "artist": "Kordhell (Sped Up)",
+    "album": "Murder in My Mind (Sped Up) - Single",
+    "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/7a/de/1c/7ade1c79-db22-f0f1-6962-c390fa2c80f7/199999370628.png/600x600bb.jpg",
+    "audioUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/d2/5e/58/d25e5802-25f7-bd23-109e-5fd9a2ac5d1d/mzaf_3262384288922300118.plus.aac.p.m4a",
+    "duration": 60,
+    "durationFormatted": "1:00",
+    "genre": "Phonk",
+    "year": 2022
+  },
+  {
+    "id": 25,
+    "title": "Brazilian Phonk Urban Racing Bass",
+    "artist": "PHONK, OCD F42 & Phonk Montagem",
+    "album": "Brazilian Phonk Urban Racing Bass - EP",
+    "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/c4/ce/6d/c4ce6d49-77ef-6e77-6e88-9aeb5b226fd7/cover.jpg/600x600bb.jpg",
+    "audioUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/f6/40/33/f6403397-c441-5bb0-bdf5-1bac89a5257d/mzaf_13020248488526460581.plus.aac.p.m4a",
+    "duration": 60,
+    "durationFormatted": "1:00",
+    "genre": "Phonk",
+    "year": 2024
+  },
+  {
+    "id": 26,
+    "title": "MONTAGEM SUPERSONIC",
+    "artist": "resvets",
+    "album": "MONTAGEM SUPERSONIC - EP",
+    "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/13/0e/1c/130e1c98-c4ea-fc53-835e-75fd667a6cf6/artwork.jpg/600x600bb.jpg",
+    "audioUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/93/a1/87/93a187bb-1af4-f346-a1c4-b4e11a657bac/mzaf_13711159015325387454.plus.aac.p.m4a",
+    "duration": 60,
+    "durationFormatted": "1:00",
+    "genre": "Phonk",
+    "year": 2024
+  },
+  {
+    "id": 27,
+    "title": "No Batidão",
+    "artist": "XRIS, NEXXN & KXVR",
+    "album": "No Batidão - EP",
+    "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/1a/dd/d1/1addd19b-aa06-8205-9b40-79e9846864cb/8721191220498.png/600x600bb.jpg",
+    "audioUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/2f/8e/9f/2f8e9fd1-89ab-bdb1-8f7c-009225fad333/mzaf_14451345812697885904.plus.aac.p.m4a",
+    "duration": 60,
+    "durationFormatted": "1:00",
+    "genre": "Phonk",
+    "year": 2024
+  },
+  {
+    "id": 28,
+    "title": "MONTAGEM COMA",
+    "artist": "Andromeda & elysian.",
+    "album": "MONTAGEM COMA - EP",
+    "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/c2/82/e0/c282e04b-17d7-a119-c391-f032c15e053f/663918259283.jpg/600x600bb.jpg",
+    "audioUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/ea/ce/bd/eacebd56-8438-8c52-df74-0756e7d5ebbe/mzaf_18362416880954537277.plus.aac.p.m4a",
+    "duration": 60,
+    "durationFormatted": "1:00",
+    "genre": "Phonk",
+    "year": 2024
+  },
+  {
+    "id": 29,
+    "title": "MONTAGEM SANTA FÈ",
+    "artist": "qaraqshy",
+    "album": "MONTAGEM SANTA FÈ - EP",
+    "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/18/e4/f3/18e4f365-2685-a684-7794-c9c2b02d28f8/663918203361.jpg/600x600bb.jpg",
+    "audioUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/df/0a/0c/df0a0c4e-f8eb-b0c0-6566-c746a8905b58/mzaf_9495584620684163392.plus.aac.p.m4a",
+    "duration": 60,
+    "durationFormatted": "1:00",
+    "genre": "Phonk",
+    "year": 2024
+  },
+  {
+    "id": 30,
+    "title": "MATADORA",
+    "artist": "DJ Asul",
+    "album": "MATADORA - EP",
+    "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/97/93/18/979318e5-6314-23fb-5191-ce9366f590d5/212389.jpg/600x600bb.jpg",
+    "audioUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/93/35/c3/9335c39d-c59f-a342-6e26-6b137b80b833/mzaf_7756725016410226990.plus.aac.p.m4a",
+    "duration": 60,
+    "durationFormatted": "1:00",
+    "genre": "Phonk",
+    "year": 2024
   }
 ];
 

@@ -14,7 +14,15 @@ export const MusicProvider = ({ children }) => {
   const [isMuted, setIsMuted] = useState(false);
   const [isShuffle, setIsShuffle] = useState(false);
   const [isRepeat, setIsRepeat] = useState(false);
-  const [likedSongIds, setLikedSongIds] = useState([2, 5, 10]);
+  const [likedSongIds, setLikedSongIds] = useState(() => {
+    try {
+      const savedLikes = localStorage.getItem('musicfy-liked-songs');
+      return savedLikes !== null ? JSON.parse(savedLikes) : [2, 5, 10];
+    } catch (e) {
+      console.error('Failed to load likes from localStorage:', e);
+      return [2, 5, 10];
+    }
+  });
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedGenre, setSelectedGenre] = useState('all');
   const [theme, setTheme] = useState(() => {
@@ -32,6 +40,15 @@ export const MusicProvider = ({ children }) => {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('musicfy-theme', theme);
   }, [theme]);
+
+  // Sync liked songs with localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem('musicfy-liked-songs', JSON.stringify(likedSongIds));
+    } catch (e) {
+      console.error('Failed to save likes to localStorage:', e);
+    }
+  }, [likedSongIds]);
 
   const toggleTheme = useCallback(() => {
     setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
