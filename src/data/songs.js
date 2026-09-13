@@ -2,14 +2,14 @@ export const SONGS = [
   {
     "id": 1,
     "title": "Dracula",
-    "artist": "Gorillaz",
-    "album": "G Sides",
-    "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/76/fc/e7/76fce783-7be6-2dcd-7b54-1306c7d872ea/825646264261.jpg/600x600bb.jpg",
-    "audioUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/dd/de/06/ddde06dc-29e0-c06c-d72b-70d621c079b5/mzaf_14589229787802800784.plus.aac.p.m4a",
+    "artist": "Tame Impala",
+    "album": "Dracula - Single",
+    "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/36/be/b4/36beb41f-c644-55cb-9fbb-bf0622a66653/196873644783.jpg/600x600bb.jpg",
+    "audioUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/71/5d/31/715d3169-5fba-a0b7-da24-2aefc83796cf/mzaf_8089500935177582820.plus.aac.p.m4a",
     "duration": 60,
     "durationFormatted": "1:00",
     "genre": "Alternative",
-    "year": 2001
+    "year": 2025
   },
   {
     "id": 2,
@@ -26,14 +26,14 @@ export const SONGS = [
   {
     "id": 3,
     "title": "Moulaga",
-    "artist": "Dime, Cazz, Menace, Nemke, shkora & Vela",
-    "album": "Moulaga - Single",
+    "artist": "Heuss L'enfoiré & JUL",
+    "album": "En esprit",
     "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/59/59/99/59599998-a807-220d-4700-072edc12dd21/883071588727_cover.jpg/600x600bb.jpg",
     "audioUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/a4/0b/58/a40b58b6-15cb-c19c-25fd-9e658c40e214/mzaf_9576732512498564846.plus.aac.p.m4a",
     "duration": 60,
     "durationFormatted": "1:00",
     "genre": "Hip-Hop/Rap",
-    "year": 2026
+    "year": 2019
   },
   {
     "id": 4,
