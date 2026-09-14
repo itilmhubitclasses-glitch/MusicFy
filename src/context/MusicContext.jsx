@@ -1,25 +1,13 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { SONGS } from '../data/songs';
 import { MusicContext } from './MusicContextInstance';
+import { createSong, deleteSongById } from '../services/songsApi';
 
 const DEFAULT_TARGET_DURATION = 60; // 1 minute per track for previews
 
 export const MusicProvider = ({ children }) => {
-  // Load initial songs: custom songs from localStorage + built-in SONGS
-  const [songs, setSongs] = useState(() => {
-    try {
-      const savedCustom = localStorage.getItem('musicfy-custom-songs');
-      if (savedCustom) {
-        const customList = JSON.parse(savedCustom);
-        if (Array.isArray(customList) && customList.length > 0) {
-          return [...customList, ...SONGS];
-        }
-      }
-    } catch (e) {
-      console.error('Failed to load custom songs from localStorage:', e);
-    }
-    return SONGS;
-  });
+  // Directly load songs from songs.js
+  const [songs, setSongs] = useState(SONGS);
 
   const [currentTrack, setCurrentTrack] = useState(() => songs[0] || null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -128,48 +116,35 @@ export const MusicProvider = ({ children }) => {
     audio.play().catch(console.error);
   }, [currentTrack?.id, isPlaying]);
 
-  // Add custom song
+  // Add song to songs.js via API
   const addSong = useCallback(
-    (newSongData) => {
-      const newTrack = {
-        id: `custom_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
-        isCustom: true,
-        createdAt: new Date().toISOString(),
-        ...newSongData,
-      };
-
-      setSongs((prev) => {
-        const updated = [newTrack, ...prev];
-        try {
-          const customList = updated.filter((s) => s.isCustom);
-          localStorage.setItem('musicfy-custom-songs', JSON.stringify(customList));
-        } catch (e) {
-          console.error('Failed to save custom song:', e);
-        }
-        return updated;
-      });
-
-      showToast(`"${newTrack.title}" kutubxonaga muvaffaqiyatli qo'shildi!`, 'success');
-      playTrack(newTrack);
-      return newTrack;
+    async (newSongData) => {
+      try {
+        const savedSong = await createSong(newSongData);
+        setSongs((prev) => [savedSong, ...prev.filter((s) => s.id !== savedSong.id)]);
+        showToast(`"${savedSong.title}" songs.js fayliga muvaffaqiyatli saqlandi!`, 'success');
+        playTrack(savedSong);
+        return savedSong;
+      } catch (err) {
+        console.error('Failed to add song to songs.js:', err);
+        showToast(err.message || "Musiqani saqlashda xatolik yuz berdi", 'error');
+        throw err;
+      }
     },
     [playTrack, showToast]
   );
 
-  // Delete custom song
+  // Delete song from songs.js via API
   const deleteSong = useCallback(
-    (trackId) => {
-      setSongs((prev) => {
-        const updated = prev.filter((s) => s.id !== trackId);
-        try {
-          const customList = updated.filter((s) => s.isCustom);
-          localStorage.setItem('musicfy-custom-songs', JSON.stringify(customList));
-        } catch (e) {
-          console.error('Failed to update localStorage after deletion:', e);
-        }
-        return updated;
-      });
-      showToast("Musiqa muvaffaqiyatli o'chirildi", 'info');
+    async (trackId) => {
+      try {
+        await deleteSongById(trackId);
+        setSongs((prev) => prev.filter((s) => s.id !== trackId));
+        showToast("Musiqa songs.js faylidan o'chirildi", 'info');
+      } catch (err) {
+        console.error('Failed to delete song from songs.js:', err);
+        showToast(err.message || "Musiqani o'chirishda xatolik yuz berdi", 'error');
+      }
     },
     [showToast]
   );

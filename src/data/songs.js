@@ -1,5 +1,17 @@
 export const SONGS = [
   {
+    "id": 31,
+    "title": "Call Me Maybe",
+    "artist": "Carly Rae Jepsen",
+    "album": "Kiss",
+    "cover": "https://cdn-images.dzcdn.net/images/cover/3fbefa3aa232f23bd14d8bbb62ba221d/1900x1900-000000-80-0-0.jpg",
+    "audioUrl": "/uploads/audio/1789397810245_call_me_maybe.mp3",
+    "duration": 193,
+    "durationFormatted": "3:13",
+    "genre": "Pop",
+    "year": 2012
+  },
+  {
     "id": 1,
     "title": "Dracula",
     "artist": "Tame Impala",

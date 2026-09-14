@@ -15,6 +15,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import { useMusic } from '../../context/useMusic';
+import { uploadMediaFile } from '../../services/songsApi';
 import './AddMusicModal.css';
 
 const DEFAULT_COVER =
@@ -66,6 +67,8 @@ const AddMusicModal = ({ isOpen, onClose }) => {
   const [coverSourceType, setCoverSourceType] = useState('url'); // 'url' | 'file'
   const [audioFileName, setAudioFileName] = useState('');
   const [coverFileName, setCoverFileName] = useState('');
+  const [audioFile, setAudioFile] = useState(null);
+  const [coverFile, setCoverFile] = useState(null);
 
   // Audio preview state inside modal
   const [isPreviewPlaying, setIsPreviewPlaying] = useState(false);
@@ -167,6 +170,7 @@ const AddMusicModal = ({ isOpen, onClose }) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    setAudioFile(file);
     const fileUrl = URL.createObjectURL(file);
     setAudioFileName(file.name);
     setFormData((prev) => {
@@ -199,6 +203,7 @@ const AddMusicModal = ({ isOpen, onClose }) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    setCoverFile(file);
     const fileUrl = URL.createObjectURL(file);
     setCoverFileName(file.name);
     setFormData((prev) => ({ ...prev, cover: fileUrl }));
@@ -272,7 +277,7 @@ const AddMusicModal = ({ isOpen, onClose }) => {
     return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!validate()) return;
@@ -280,6 +285,18 @@ const AddMusicModal = ({ isOpen, onClose }) => {
     setIsSubmitting(true);
 
     try {
+      let finalAudioUrl = formData.audioUrl.trim();
+      let finalCoverUrl = formData.cover.trim() || DEFAULT_COVER;
+
+      // If uploaded from local computer, upload permanently to public/uploads/
+      if (audioSourceType === 'file' && audioFile) {
+        finalAudioUrl = await uploadMediaFile(audioFile, 'audio');
+      }
+
+      if (coverSourceType === 'file' && coverFile) {
+        finalCoverUrl = await uploadMediaFile(coverFile, 'covers');
+      }
+
       const selectedGenre =
         formData.genre === 'Custom' ? formData.customGenre.trim() : formData.genre;
 
@@ -289,15 +306,15 @@ const AddMusicModal = ({ isOpen, onClose }) => {
         title: formData.title.trim(),
         artist: formData.artist.trim(),
         album: formData.album.trim() || `${formData.title.trim()} - Single`,
-        cover: formData.cover.trim() || DEFAULT_COVER,
-        audioUrl: formData.audioUrl.trim(),
+        cover: finalCoverUrl,
+        audioUrl: finalAudioUrl,
         genre: selectedGenre,
         duration: dur,
         durationFormatted: formatDurationString(dur),
         year: parseInt(formData.year, 10) || new Date().getFullYear(),
       };
 
-      addSong(newSong);
+      await addSong(newSong);
 
       // Stop any preview sound
       if (previewAudioRef.current) {
@@ -315,13 +332,15 @@ const AddMusicModal = ({ isOpen, onClose }) => {
         customGenre: '',
         year: new Date().getFullYear(),
       });
+      setAudioFile(null);
+      setCoverFile(null);
       setAudioFileName('');
       setCoverFileName('');
       setErrors({});
       onClose();
     } catch (err) {
-      console.error('Failed to add song:', err);
-      setErrors({ form: "Musiqani qo'shishda xatolik yuz berdi" });
+      console.error('Failed to add song to songs.js:', err);
+      setErrors({ form: err.message || "Musiqani songs.js fayliga qo'shishda xatolik yuz berdi" });
     } finally {
       setIsSubmitting(false);
     }
