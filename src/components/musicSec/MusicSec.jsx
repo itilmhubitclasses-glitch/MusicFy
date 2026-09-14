@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Play, Pause, Heart, LayoutGrid, List, Clock, Disc, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useMusic } from '../../context/useMusic';
 import './MusicSec.css';
@@ -20,11 +20,14 @@ const MusicSec = () => {
 
   const [viewMode, setViewMode] = useState('grid');
   const [currentPage, setCurrentPage] = useState(1);
+  const [prevFilterKey, setPrevFilterKey] = useState(`${searchQuery}_${selectedGenre}`);
 
-  // Reset page to 1 when search query or genre filter changes
-  useEffect(() => {
+  // Reset page safely during render if filters changed
+  const currentFilterKey = `${searchQuery}_${selectedGenre}`;
+  if (prevFilterKey !== currentFilterKey) {
+    setPrevFilterKey(currentFilterKey);
     setCurrentPage(1);
-  }, [searchQuery, selectedGenre]);
+  }
 
   const totalPages = Math.ceil(filteredSongs.length / ITEMS_PER_PAGE) || 1;
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -306,4 +309,3 @@ const MusicSec = () => {
 };
 
 export default MusicSec;
-

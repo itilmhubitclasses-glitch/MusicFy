@@ -2,18 +2,40 @@ import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { SONGS } from '../data/songs';
 import { MusicContext } from './MusicContextInstance';
 
-const TARGET_DURATION = 60; // 1 minute per track
+const DEFAULT_TARGET_DURATION = 60; // 1 minute per track for previews
 
 export const MusicProvider = ({ children }) => {
-  const [songs] = useState(SONGS);
-  const [currentTrack, setCurrentTrack] = useState(SONGS[0] || null);
+  // Load initial songs: custom songs from localStorage + built-in SONGS
+  const [songs, setSongs] = useState(() => {
+    try {
+      const savedCustom = localStorage.getItem('musicfy-custom-songs');
+      if (savedCustom) {
+        const customList = JSON.parse(savedCustom);
+        if (Array.isArray(customList) && customList.length > 0) {
+          return [...customList, ...SONGS];
+        }
+      }
+    } catch (e) {
+      console.error('Failed to load custom songs from localStorage:', e);
+    }
+    return SONGS;
+  });
+
+  const [currentTrack, setCurrentTrack] = useState(() => songs[0] || null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
-  const [duration] = useState(TARGET_DURATION);
+  const [duration, setDuration] = useState(songs[0]?.duration || DEFAULT_TARGET_DURATION);
   const [volume, setVolume] = useState(0.8);
   const [isMuted, setIsMuted] = useState(false);
   const [isShuffle, setIsShuffle] = useState(false);
   const [isRepeat, setIsRepeat] = useState(false);
+
+  // Add Music Modal state
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+  // Toast feedback state
+  const [toast, setToast] = useState({ message: '', type: 'success' });
+
   const [likedSongIds, setLikedSongIds] = useState(() => {
     try {
       const savedLikes = localStorage.getItem('musicfy-liked-songs');
@@ -23,6 +45,7 @@ export const MusicProvider = ({ children }) => {
       return [2, 5, 10];
     }
   });
+
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedGenre, setSelectedGenre] = useState('all');
   const [theme, setTheme] = useState(() => {
@@ -34,6 +57,12 @@ export const MusicProvider = ({ children }) => {
   const isRepeatRef = useRef(isRepeat);
   const loopCountRef = useRef(0);
   const currentTimeRef = useRef(0);
+  const currentTrackRef = useRef(currentTrack);
+
+  // Sync ref
+  useEffect(() => {
+    currentTrackRef.current = currentTrack;
+  }, [currentTrack]);
 
   // Sync theme with document element and localStorage
   useEffect(() => {
@@ -54,12 +83,28 @@ export const MusicProvider = ({ children }) => {
     setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
   }, []);
 
-  // Sync ref with state
+  const openAddModal = useCallback(() => {
+    setIsAddModalOpen(true);
+  }, []);
+
+  const closeAddModal = useCallback(() => {
+    setIsAddModalOpen(false);
+  }, []);
+
+  const showToast = useCallback((message, type = 'success') => {
+    setToast({ message, type });
+  }, []);
+
+  const hideToast = useCallback(() => {
+    setToast({ message: '', type: 'success' });
+  }, []);
+
+  // Sync repeat ref
   useEffect(() => {
     isRepeatRef.current = isRepeat;
   }, [isRepeat]);
 
-  // Sync track changes
+  // Track player execution
   const playTrack = useCallback((track) => {
     const audio = audioRef.current;
     if (!track) return;
@@ -77,10 +122,57 @@ export const MusicProvider = ({ children }) => {
     currentTimeRef.current = 0;
     setCurrentTime(0);
     setCurrentTrack(track);
+    setDuration(track.duration || DEFAULT_TARGET_DURATION);
     audio.src = track.audioUrl;
     audio.currentTime = 0;
     audio.play().catch(console.error);
   }, [currentTrack?.id, isPlaying]);
+
+  // Add custom song
+  const addSong = useCallback(
+    (newSongData) => {
+      const newTrack = {
+        id: `custom_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+        isCustom: true,
+        createdAt: new Date().toISOString(),
+        ...newSongData,
+      };
+
+      setSongs((prev) => {
+        const updated = [newTrack, ...prev];
+        try {
+          const customList = updated.filter((s) => s.isCustom);
+          localStorage.setItem('musicfy-custom-songs', JSON.stringify(customList));
+        } catch (e) {
+          console.error('Failed to save custom song:', e);
+        }
+        return updated;
+      });
+
+      showToast(`"${newTrack.title}" kutubxonaga muvaffaqiyatli qo'shildi!`, 'success');
+      playTrack(newTrack);
+      return newTrack;
+    },
+    [playTrack, showToast]
+  );
+
+  // Delete custom song
+  const deleteSong = useCallback(
+    (trackId) => {
+      setSongs((prev) => {
+        const updated = prev.filter((s) => s.id !== trackId);
+        try {
+          const customList = updated.filter((s) => s.isCustom);
+          localStorage.setItem('musicfy-custom-songs', JSON.stringify(customList));
+        } catch (e) {
+          console.error('Failed to update localStorage after deletion:', e);
+        }
+        return updated;
+      });
+      showToast("Musiqa muvaffaqiyatli o'chirildi", 'info');
+    },
+    [showToast]
+  );
 
   const togglePlay = useCallback(() => {
     const audio = audioRef.current;
@@ -117,22 +209,32 @@ export const MusicProvider = ({ children }) => {
     playNextRef.current = playNext;
   }, [playNext]);
 
-  const seek = useCallback((time) => {
-    const audio = audioRef.current;
-    const clampedTime = Math.max(0, Math.min(TARGET_DURATION, time));
-    const baseDur = audio.duration && !isNaN(audio.duration) ? audio.duration : 30;
+  const seek = useCallback(
+    (time) => {
+      const audio = audioRef.current;
+      const current = currentTrackRef.current;
+      const isCustomTrack = current?.isCustom || (current?.audioUrl && !current.audioUrl.includes('apple.com'));
+      const activeDuration = isCustomTrack && audio.duration ? audio.duration : DEFAULT_TARGET_DURATION;
+      const clampedTime = Math.max(0, Math.min(activeDuration, time));
 
-    if (clampedTime < baseDur) {
-      loopCountRef.current = 0;
-      audio.currentTime = clampedTime;
-    } else {
-      loopCountRef.current = 1;
-      audio.currentTime = Math.min(baseDur - 0.1, clampedTime - baseDur);
-    }
+      if (isCustomTrack) {
+        audio.currentTime = clampedTime;
+      } else {
+        const baseDur = audio.duration && !isNaN(audio.duration) ? audio.duration : 30;
+        if (clampedTime < baseDur) {
+          loopCountRef.current = 0;
+          audio.currentTime = clampedTime;
+        } else {
+          loopCountRef.current = 1;
+          audio.currentTime = Math.min(baseDur - 0.1, clampedTime - baseDur);
+        }
+      }
 
-    currentTimeRef.current = clampedTime;
-    setCurrentTime(clampedTime);
-  }, []);
+      currentTimeRef.current = clampedTime;
+      setCurrentTime(clampedTime);
+    },
+    []
+  );
 
   const playPrev = useCallback(() => {
     const audio = audioRef.current;
@@ -183,51 +285,87 @@ export const MusicProvider = ({ children }) => {
     );
   }, []);
 
-  const isLiked = useCallback((trackId) => {
-    return likedSongIds.includes(trackId);
-  }, [likedSongIds]);
+  const isLiked = useCallback(
+    (trackId) => {
+      return likedSongIds.includes(trackId);
+    },
+    [likedSongIds]
+  );
 
   // Audio element listeners
   useEffect(() => {
     const audio = audioRef.current;
     audio.volume = 0.8;
 
-    const handleTimeUpdate = () => {
-      const baseDur = audio.duration && !isNaN(audio.duration) ? audio.duration : 30;
-      const total = Math.min(TARGET_DURATION, loopCountRef.current * baseDur + audio.currentTime);
-      currentTimeRef.current = total;
-      setCurrentTime(total);
+    const handleLoadedMetadata = () => {
+      const current = currentTrackRef.current;
+      const isCustomTrack = current?.isCustom || (current?.audioUrl && !current.audioUrl.includes('apple.com'));
+      if (isCustomTrack && audio.duration && !isNaN(audio.duration) && isFinite(audio.duration)) {
+        setDuration(Math.round(audio.duration));
+      } else {
+        setDuration(DEFAULT_TARGET_DURATION);
+      }
+    };
 
-      // Transition to next loop when approaching 30s
-      if (loopCountRef.current === 0 && audio.currentTime >= baseDur - 0.25) {
-        loopCountRef.current = 1;
-        audio.currentTime = 0;
-        audio.play().catch(() => {});
-      } else if (loopCountRef.current === 1 && total >= TARGET_DURATION) {
-        loopCountRef.current = 0;
-        currentTimeRef.current = 0;
+    const handleTimeUpdate = () => {
+      const current = currentTrackRef.current;
+      const isCustomTrack = current?.isCustom || (current?.audioUrl && !current.audioUrl.includes('apple.com'));
+
+      if (isCustomTrack) {
+        currentTimeRef.current = audio.currentTime;
+        setCurrentTime(audio.currentTime);
+        if (audio.duration && !isNaN(audio.duration)) {
+          setDuration(Math.round(audio.duration));
+        }
+      } else {
+        // iTunes 30s preview looping for 60s
+        const baseDur = audio.duration && !isNaN(audio.duration) ? audio.duration : 30;
+        const total = Math.min(DEFAULT_TARGET_DURATION, loopCountRef.current * baseDur + audio.currentTime);
+        currentTimeRef.current = total;
+        setCurrentTime(total);
+
+        if (loopCountRef.current === 0 && audio.currentTime >= baseDur - 0.25) {
+          loopCountRef.current = 1;
+          audio.currentTime = 0;
+          audio.play().catch(() => {});
+        } else if (loopCountRef.current === 1 && total >= DEFAULT_TARGET_DURATION) {
+          loopCountRef.current = 0;
+          currentTimeRef.current = 0;
+          if (isRepeatRef.current) {
+            audio.currentTime = 0;
+            audio.play().catch(() => {});
+          } else {
+            playNextRef.current();
+          }
+        }
+      }
+    };
+
+    const handleEnded = () => {
+      const current = currentTrackRef.current;
+      const isCustomTrack = current?.isCustom || (current?.audioUrl && !current.audioUrl.includes('apple.com'));
+
+      if (isCustomTrack) {
         if (isRepeatRef.current) {
           audio.currentTime = 0;
           audio.play().catch(() => {});
         } else {
           playNextRef.current();
         }
-      }
-    };
-
-    const handleEnded = () => {
-      if (loopCountRef.current === 0) {
-        loopCountRef.current = 1;
-        audio.currentTime = 0;
-        audio.play().catch(() => {});
       } else {
-        loopCountRef.current = 0;
-        currentTimeRef.current = 0;
-        if (isRepeatRef.current) {
+        if (loopCountRef.current === 0) {
+          loopCountRef.current = 1;
           audio.currentTime = 0;
           audio.play().catch(() => {});
         } else {
-          playNextRef.current();
+          loopCountRef.current = 0;
+          currentTimeRef.current = 0;
+          if (isRepeatRef.current) {
+            audio.currentTime = 0;
+            audio.play().catch(() => {});
+          } else {
+            playNextRef.current();
+          }
         }
       }
     };
@@ -235,12 +373,14 @@ export const MusicProvider = ({ children }) => {
     const handlePlay = () => setIsPlaying(true);
     const handlePause = () => setIsPlaying(false);
 
+    audio.addEventListener('loadedmetadata', handleLoadedMetadata);
     audio.addEventListener('timeupdate', handleTimeUpdate);
     audio.addEventListener('ended', handleEnded);
     audio.addEventListener('play', handlePlay);
     audio.addEventListener('pause', handlePause);
 
     return () => {
+      audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
       audio.removeEventListener('timeupdate', handleTimeUpdate);
       audio.removeEventListener('ended', handleEnded);
       audio.removeEventListener('play', handlePlay);
@@ -260,14 +400,14 @@ export const MusicProvider = ({ children }) => {
   useEffect(() => {
     const handleKeyDown = (e) => {
       const tag = document.activeElement?.tagName;
-      if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
 
       if (e.code === 'Space') {
         e.preventDefault();
         togglePlay();
       } else if (e.code === 'ArrowRight') {
         e.preventDefault();
-        seek(Math.min(TARGET_DURATION, currentTimeRef.current + 5));
+        seek(Math.min(duration, currentTimeRef.current + 5));
       } else if (e.code === 'ArrowLeft') {
         e.preventDefault();
         seek(Math.max(0, currentTimeRef.current - 5));
@@ -285,7 +425,7 @@ export const MusicProvider = ({ children }) => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [togglePlay, seek, volume, handleVolumeChange, toggleMute]);
+  }, [togglePlay, seek, volume, handleVolumeChange, toggleMute, duration]);
 
   // Filtered songs
   const filteredSongs = useMemo(() => {
@@ -323,6 +463,14 @@ export const MusicProvider = ({ children }) => {
     searchQuery,
     selectedGenre,
     theme,
+    isAddModalOpen,
+    toast,
+    openAddModal,
+    closeAddModal,
+    addSong,
+    deleteSong,
+    showToast,
+    hideToast,
     toggleTheme,
     playTrack,
     togglePlay,

@@ -142,25 +142,71 @@
   color: var(--text-primary);
 }
 
+/* Add Music Plus Button */
+.nav-add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 12px;
+  border-radius: var(--radius-sm);
+  background-color: var(--accent);
+  color: var(--accent-contrast);
+  font-size: 0.84rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+  margin-left: 2px;
+}
+
+.nav-add-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.nav-add-btn:active {
+  transform: translateY(0);
+}
+
+.add-icon {
+  stroke-width: 2.5px;
+}
+
 /* Theme Toggle Button */
 .theme-toggle-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   border-radius: var(--radius-sm);
   color: var(--text-secondary);
   border: 1px solid var(--border-subtle);
-  margin-left: 6px;
+  background-color: var(--bg-input);
+  margin-left: 4px;
+  transition: all var(--transition-fast);
 }
 
 .theme-toggle-btn:hover {
   color: var(--text-primary);
   background-color: var(--bg-card-hover);
+  border-color: var(--border-active);
 }
 
 /* Responsive */
+@media (max-width: 992px) {
+  .add-btn-text {
+    display: none;
+  }
+
+  .nav-add-btn {
+    padding: 0;
+    width: 34px;
+    height: 34px;
+    justify-content: center;
+  }
+}
+
 @media (max-width: 860px) {
   .navbar-container {
     padding: 0 14px;
@@ -232,6 +278,13 @@
     font-weight: 700;
   }
 
+  .nav-add-btn {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    min-height: 32px;
+  }
+
   .theme-toggle-btn {
     width: 32px;
     height: 32px;
@@ -246,7 +299,7 @@
   }
 
   .navbar-search {
-    max-width: 130px;
+    max-width: 120px;
     padding: 0 6px;
   }
 
@@ -261,10 +314,15 @@
     min-height: 30px;
   }
 
+  .nav-add-btn {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    min-height: 30px;
+  }
+
   .theme-toggle-btn {
     width: 30px;
     height: 30px;
   }
 }
-
-

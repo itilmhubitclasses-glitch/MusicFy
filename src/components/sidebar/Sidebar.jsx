@@ -1,17 +1,8 @@
 import { NavLink } from 'react-router-dom';
 import { Home, Heart, Info, Disc3 } from 'lucide-react';
 import { useMusic } from '../../context/useMusic';
+import { GENRES } from '../../data/genres';
 import './Sidebar.css';
-
-export const GENRES = [
-  { id: 'all', label: 'Barchasi' },
-  { id: 'pop', label: 'Pop' },
-  { id: 'hip-hop/rap', label: 'Hip-Hop / Rap' },
-  { id: 'phonk', label: 'Phonk' },
-  { id: 'alternative', label: 'Alternative' },
-  { id: 'dance', label: 'Dance & Club' },
-  { id: 'r&b/soul', label: 'R&B / Soul' },
-];
 
 const Sidebar = () => {
   const { selectedGenre, setSelectedGenre, likedSongIds } = useMusic();

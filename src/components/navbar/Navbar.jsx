@@ -1,10 +1,10 @@
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Music2, Search, Heart, Info, Home, X, Sun, Moon } from 'lucide-react';
+import { Music2, Search, Heart, Info, Home, X, Sun, Moon, Plus } from 'lucide-react';
 import { useMusic } from '../../context/useMusic';
 import './Navbar.css';
 
 const Navbar = () => {
-  const { searchQuery, setSearchQuery, likedSongIds, theme, toggleTheme } = useMusic();
+  const { searchQuery, setSearchQuery, likedSongIds, theme, toggleTheme, openAddModal } = useMusic();
   const navigate = useNavigate();
 
   const handleSearchChange = (e) => {
@@ -52,7 +52,7 @@ const Navbar = () => {
           )}
         </div>
 
-        {/* Navigation Links */}
+        {/* Navigation Links & Actions */}
         <nav className="navbar-nav">
           <NavLink
             to="/"
@@ -84,6 +84,18 @@ const Navbar = () => {
             <Info size={16} className="nav-icon" />
             <span>About us</span>
           </NavLink>
+
+          {/* Add Music Plus Button */}
+          <button
+            type="button"
+            onClick={openAddModal}
+            className="nav-add-btn"
+            title="Yangi musiqa qo‘shish"
+            aria-label="Yangi musiqa qo‘shish"
+          >
+            <Plus size={16} className="add-icon" />
+            <span className="add-btn-text">Musiqa qo‘shish</span>
+          </button>
 
           {/* Theme Toggle Button */}
           <button
