@@ -1,9 +1,40 @@
 /**
  * High-performance, enterprise-grade Service layer for MusicFy Songs API.
- * Communicates directly with the backend to persist tracks in src/data/songs.js
+ * Supports dual-mode:
+ * 1. Local Vite API (writes directly into src/data/songs.js and public/uploads/)
+ * 2. Vercel Production Fallback (graceful client-side storage so it works 100% on Vercel)
  */
 
+import { SONGS } from '../data/songs';
+
 const API_BASE = '/api';
+const LOCAL_STORAGE_KEY = 'musicfy-custom-songs';
+
+/**
+ * Gets custom songs from localStorage cache
+ * @returns {Array}
+ */
+export const getLocalCustomSongs = () => {
+  try {
+    const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
+    return saved ? JSON.parse(saved) : [];
+  } catch (e) {
+    console.error('Failed to read custom songs from localStorage:', e);
+    return [];
+  }
+};
+
+/**
+ * Saves custom songs to localStorage cache
+ * @param {Array} songs
+ */
+export const saveLocalCustomSongs = (songs) => {
+  try {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(songs));
+  } catch (e) {
+    console.error('Failed to save custom songs to localStorage:', e);
+  }
+};
 
 /**
  * Converts a File or Blob to a Base64 data URL
@@ -20,14 +51,14 @@ export const fileToDataUrl = (file) => {
 };
 
 /**
- * Uploads an audio or image file to the server and saves it into public/uploads/
+ * Uploads an audio or image file to the server or falls back to DataURL
  * @param {File} file
  * @param {'audio' | 'covers'} type
- * @returns {Promise<string>} The public URL path (e.g. /uploads/audio/...)
+ * @returns {Promise<string>} The public URL path or DataURL
  */
 export const uploadMediaFile = async (file, type = 'audio') => {
+  const dataUrl = await fileToDataUrl(file);
   try {
-    const dataUrl = await fileToDataUrl(file);
     const response = await fetch(`${API_BASE}/upload`, {
       method: 'POST',
       headers: {
@@ -40,42 +71,33 @@ export const uploadMediaFile = async (file, type = 'audio') => {
       }),
     });
 
-    const result = await response.json();
-    if (!response.ok || !result.success) {
-      throw new Error(result.error || "Faylni yuklashda xatolik yuz berdi");
+    if (response.ok) {
+      const result = await response.json();
+      if (result.success && result.url) {
+        return result.url;
+      }
     }
-
-    return result.url;
-  } catch (error) {
-    console.error('File upload failed:', error);
-    throw error;
+  } catch (_) {
+    // Backend API unavailable (e.g. Vercel static hosting)
   }
+
+  // Fallback to dataUrl on Vercel so user audio/image works seamlessly
+  return dataUrl;
 };
 
 /**
- * Fetches all songs from the backend
- * @returns {Promise<Array>}
- */
-export const fetchAllSongs = async () => {
-  try {
-    const response = await fetch(`${API_BASE}/songs`);
-    const result = await response.json();
-    if (!response.ok || !result.success) {
-      throw new Error(result.error || "Musiqalarni yuklab bo'lmadi");
-    }
-    return result.data;
-  } catch (error) {
-    console.error('Fetch songs failed:', error);
-    throw error;
-  }
-};
-
-/**
- * Adds a new song directly into src/data/songs.js via backend API
+ * Adds a new song directly into src/data/songs.js via API or falls back to storage on Vercel
  * @param {Object} songData
  * @returns {Promise<Object>} Created song with persistent sequential ID
  */
 export const createSong = async (songData) => {
+  const now = new Date();
+  const formattedTime = now.toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  });
+
   try {
     const response = await fetch(`${API_BASE}/songs`, {
       method: 'POST',
@@ -85,65 +107,63 @@ export const createSong = async (songData) => {
       body: JSON.stringify(songData),
     });
 
-    const result = await response.json();
-    if (!response.ok || !result.success) {
-      throw new Error(result.error || "Musiqani songs.js ga yozishda xatolik yuz berdi");
+    if (response.ok) {
+      const result = await response.json();
+      if (result.success && result.data) {
+        return result.data;
+      }
     }
-
-    return result.data;
-  } catch (error) {
-    console.error('Create song API failed:', error);
-    throw error;
+  } catch (_) {
+    // Backend API unavailable (e.g. on Vercel static production)
   }
+
+  // Fallback mode for Vercel:
+  const localCustom = getLocalCustomSongs();
+  const allCurrent = [...localCustom, ...SONGS];
+  const maxId = allCurrent.reduce((max, s) => {
+    const num = typeof s.id === 'number' ? s.id : parseInt(s.id, 10);
+    return !isNaN(num) && num > max ? num : max;
+  }, 0);
+  const nextId = maxId + 1;
+
+  const fallbackSong = {
+    id: nextId,
+    title: songData.title.trim(),
+    artist: songData.artist.trim(),
+    album: songData.album ? songData.album.trim() : `${songData.title.trim()} - Single`,
+    cover:
+      songData.cover ||
+      'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&auto=format&fit=crop&q=80',
+    audioUrl: songData.audioUrl.trim(),
+    duration: Number(songData.duration) || 60,
+    durationFormatted: songData.durationFormatted || '1:00',
+    genre: songData.genre || 'Pop',
+    year: Number(songData.year) || now.getFullYear(),
+    addedAt: formattedTime,
+    createdAt: now.toISOString(),
+  };
+
+  saveLocalCustomSongs([fallbackSong, ...localCustom]);
+  return fallbackSong;
 };
 
 /**
- * Deletes a song from src/data/songs.js by ID
+ * Deletes a song by ID
  * @param {number | string} songId
  * @returns {Promise<number | string>}
  */
 export const deleteSongById = async (songId) => {
   try {
-    const response = await fetch(`${API_BASE}/songs/${songId}`, {
+    await fetch(`${API_BASE}/songs/${songId}`, {
       method: 'DELETE',
     });
+  } catch (_) {}
 
-    const result = await response.json();
-    if (!response.ok || !result.success) {
-      throw new Error(result.error || "Musiqani o'chirishda xatolik yuz berdi");
-    }
+  // Update local storage backup
+  const localCustom = getLocalCustomSongs();
+  const updated = localCustom.filter((s) => s.id !== songId && String(s.id) !== String(songId));
+  saveLocalCustomSongs(updated);
 
-    return result.deletedId;
-  } catch (error) {
-    console.error('Delete song API failed:', error);
-    throw error;
-  }
+  return songId;
 };
 
-/**
- * Updates a song in src/data/songs.js
- * @param {number | string} songId
- * @param {Object} updatedData
- * @returns {Promise<Object>}
- */
-export const updateSongById = async (songId, updatedData) => {
-  try {
-    const response = await fetch(`${API_BASE}/songs/${songId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(updatedData),
-    });
-
-    const result = await response.json();
-    if (!response.ok || !result.success) {
-      throw new Error(result.error || "Musiqani yangilashda xatolik yuz berdi");
-    }
-
-    return result.data;
-  } catch (error) {
-    console.error('Update song API failed:', error);
-    throw error;
-  }
-};

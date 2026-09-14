@@ -1,13 +1,21 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { SONGS } from '../data/songs';
 import { MusicContext } from './MusicContextInstance';
-import { createSong, deleteSongById } from '../services/songsApi';
+import { createSong, deleteSongById, getLocalCustomSongs } from '../services/songsApi';
 
 const DEFAULT_TARGET_DURATION = 60; // 1 minute per track for previews
 
 export const MusicProvider = ({ children }) => {
-  // Directly load songs from songs.js
-  const [songs, setSongs] = useState(SONGS);
+  // Load songs from songs.js + any custom songs cache for Vercel compatibility
+  const [songs, setSongs] = useState(() => {
+    const customList = getLocalCustomSongs();
+    if (Array.isArray(customList) && customList.length > 0) {
+      const customIds = new Set(customList.map((s) => s.id));
+      const remainingBuiltin = SONGS.filter((s) => !customIds.has(s.id));
+      return [...customList, ...remainingBuiltin];
+    }
+    return SONGS;
+  });
 
   const [currentTrack, setCurrentTrack] = useState(() => songs[0] || null);
   const [isPlaying, setIsPlaying] = useState(false);
