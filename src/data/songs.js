@@ -1,16 +1,5 @@
 export const SONGS = [
-  {
-    "id": 31,
-    "title": "Call Me Maybe",
-    "artist": "Carly Rae Jepsen",
-    "album": "Kiss",
-    "cover": "https://cdn-images.dzcdn.net/images/cover/3fbefa3aa232f23bd14d8bbb62ba221d/1900x1900-000000-80-0-0.jpg",
-    "audioUrl": "/uploads/audio/1789397810245_call_me_maybe.mp3",
-    "duration": 193,
-    "durationFormatted": "3:13",
-    "genre": "Pop",
-    "year": 2012
-  },
+
   {
     "id": 1,
     "title": "Dracula",
@@ -363,7 +352,7 @@ export const SONGS = [
     "id": 30,
     "title": "MATADORA",
     "artist": "DJ Asul",
-    "album": "MATADORA - EP",
+    "album": "MATADORA",
     "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/97/93/18/979318e5-6314-23fb-5191-ce9366f590d5/212389.jpg/600x600bb.jpg",
     "audioUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/93/35/c3/9335c39d-c59f-a342-6e26-6b137b80b833/mzaf_7756725016410226990.plus.aac.p.m4a",
     "duration": 60,
