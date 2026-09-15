@@ -1,7 +1,17 @@
-import { useState } from 'react';
-import { Play, Pause, Heart, LayoutGrid, List, Clock, Disc, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useMusic } from '../../context/useMusic';
-import './MusicSec.css';
+import { useState } from "react";
+import {
+  Play,
+  Pause,
+  Heart,
+  LayoutGrid,
+  List,
+  Clock,
+  Disc,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
+import { useMusic } from "../../context/useMusic";
+import "./MusicSec.css";
 
 const ITEMS_PER_PAGE = 12;
 
@@ -18,9 +28,11 @@ const MusicSec = () => {
     selectedGenre,
   } = useMusic();
 
-  const [viewMode, setViewMode] = useState('grid');
+  const [viewMode, setViewMode] = useState("grid");
   const [currentPage, setCurrentPage] = useState(1);
-  const [prevFilterKey, setPrevFilterKey] = useState(`${searchQuery}_${selectedGenre}`);
+  const [prevFilterKey, setPrevFilterKey] = useState(
+    `${searchQuery}_${selectedGenre}`,
+  );
 
   // Reset page safely during render if filters changed
   const currentFilterKey = `${searchQuery}_${selectedGenre}`;
@@ -31,7 +43,10 @@ const MusicSec = () => {
 
   const totalPages = Math.ceil(filteredSongs.length / ITEMS_PER_PAGE) || 1;
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const currentSongs = filteredSongs.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const currentSongs = filteredSongs.slice(
+    startIndex,
+    startIndex + ITEMS_PER_PAGE,
+  );
 
   const handleTrackClick = (song) => {
     if (currentTrack?.id === song.id) {
@@ -45,9 +60,9 @@ const MusicSec = () => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
       // Smooth scroll to music section top
-      const section = document.querySelector('.musicsec-root');
+      const section = document.querySelector(".musicsec-root");
       if (section) {
-        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        section.scrollIntoView({ behavior: "smooth", block: "start" });
       }
     }
   };
@@ -58,17 +73,21 @@ const MusicSec = () => {
       <div className="musicsec-header">
         <div>
           <h3 className="musicsec-title">
-            {searchQuery ? `"${searchQuery}" bo‘yicha natijalar` : 'Barcha Musiqalar'}
+            {searchQuery
+              ? `"${searchQuery}" bo‘yicha natijalar`
+              : "Barcha Musiqalar"}
           </h3>
-          <span className="musicsec-count">{filteredSongs.length} ta trek mavjud</span>
+          <span className="musicsec-count">
+            {filteredSongs.length} ta trek mavjud
+          </span>
         </div>
 
         {/* View mode toggle */}
         <div className="view-toggle">
           <button
             type="button"
-            onClick={() => setViewMode('grid')}
-            className={`view-btn ${viewMode === 'grid' ? 'active' : ''}`}
+            onClick={() => setViewMode("grid")}
+            className={`view-btn ${viewMode === "grid" ? "active" : ""}`}
             aria-label="Kataklar ko'rinishi"
             title="Kataklar ko'rinishi"
           >
@@ -76,8 +95,8 @@ const MusicSec = () => {
           </button>
           <button
             type="button"
-            onClick={() => setViewMode('list')}
-            className={`view-btn ${viewMode === 'list' ? 'active' : ''}`}
+            onClick={() => setViewMode("list")}
+            className={`view-btn ${viewMode === "list" ? "active" : ""}`}
             aria-label="Ro'yxat ko'rinishi"
             title="Ro'yxat ko'rinishi"
           >
@@ -91,12 +110,14 @@ const MusicSec = () => {
         <div className="empty-state">
           <Disc size={42} className="empty-icon" />
           <p className="empty-title">Musiqa topilmadi</p>
-          <p className="empty-desc">Boshqa so‘z yoki janr bo‘yicha qidirib ko‘ring.</p>
+          <p className="empty-desc">
+            Boshqa so‘z yoki janr bo‘yicha qidirib ko‘ring.
+          </p>
         </div>
       )}
 
       {/* Grid View */}
-      {viewMode === 'grid' && filteredSongs.length > 0 && (
+      {viewMode === "grid" && filteredSongs.length > 0 && (
         <div className="songs-grid">
           {currentSongs.map((song) => {
             const isCurrent = currentTrack?.id === song.id;
@@ -106,7 +127,7 @@ const MusicSec = () => {
             return (
               <div
                 key={song.id}
-                className={`song-card ${isCurrent ? 'active' : ''}`}
+                className={`song-card ${isCurrent ? "active" : ""}`}
                 onClick={() => handleTrackClick(song)}
               >
                 <div className="song-card-cover-wrap">
@@ -118,7 +139,7 @@ const MusicSec = () => {
                   />
                   <button
                     type="button"
-                    className={`card-play-btn ${isPlayingThis ? 'playing' : ''}`}
+                    className={`card-play-btn ${isPlayingThis ? "playing" : ""}`}
                     aria-label={isPlayingThis ? "To'xtatish" : "Ijro etish"}
                     onClick={(e) => {
                       e.stopPropagation();
@@ -151,13 +172,13 @@ const MusicSec = () => {
                         e.stopPropagation();
                         toggleLike(song.id);
                       }}
-                      className={`card-like-btn ${liked ? 'liked' : ''}`}
+                      className={`card-like-btn ${liked ? "liked" : ""}`}
                       aria-label="Like"
                     >
                       <Heart
                         size={15}
-                        fill={liked ? '#c47171' : 'none'}
-                        color={liked ? '#c47171' : 'currentColor'}
+                        fill={liked ? "#c47171" : "none"}
+                        color={liked ? "#c47171" : "currentColor"}
                       />
                     </button>
                   </div>
@@ -169,7 +190,7 @@ const MusicSec = () => {
       )}
 
       {/* List View */}
-      {viewMode === 'list' && filteredSongs.length > 0 && (
+      {viewMode === "list" && filteredSongs.length > 0 && (
         <div className="songs-table-wrap">
           <table className="songs-table">
             <thead>
@@ -194,7 +215,7 @@ const MusicSec = () => {
                 return (
                   <tr
                     key={song.id}
-                    className={`song-row ${isCurrent ? 'active' : ''}`}
+                    className={`song-row ${isCurrent ? "active" : ""}`}
                     onClick={() => handleTrackClick(song)}
                   >
                     <td className="td-num">
@@ -224,7 +245,9 @@ const MusicSec = () => {
                           loading="lazy"
                         />
                         <div className="row-titles">
-                          <span className={`row-track-name ${isCurrent ? 'active' : ''}`}>
+                          <span
+                            className={`row-track-name ${isCurrent ? "active" : ""}`}
+                          >
                             {song.title}
                           </span>
                           <span className="row-artist-name">{song.artist}</span>
@@ -247,13 +270,13 @@ const MusicSec = () => {
                           e.stopPropagation();
                           toggleLike(song.id);
                         }}
-                        className={`row-like-btn ${liked ? 'liked' : ''}`}
+                        className={`row-like-btn ${liked ? "liked" : ""}`}
                         aria-label="Like"
                       >
                         <Heart
                           size={15}
-                          fill={liked ? '#c47171' : 'none'}
-                          color={liked ? '#c47171' : 'currentColor'}
+                          fill={liked ? "#c47171" : "none"}
+                          color={liked ? "#c47171" : "currentColor"}
                         />
                       </button>
                     </td>
@@ -280,16 +303,18 @@ const MusicSec = () => {
           </button>
 
           <div className="page-numbers">
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
-              <button
-                key={pageNum}
-                type="button"
-                className={`page-num-btn ${currentPage === pageNum ? 'active' : ''}`}
-                onClick={() => handlePageChange(pageNum)}
-              >
-                {pageNum}
-              </button>
-            ))}
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+              (pageNum) => (
+                <button
+                  key={pageNum}
+                  type="button"
+                  className={`page-num-btn ${currentPage === pageNum ? "active" : ""}`}
+                  onClick={() => handlePageChange(pageNum)}
+                >
+                  {pageNum}
+                </button>
+              ),
+            )}
           </div>
 
           <button

@@ -39,14 +39,14 @@ export const SONGS = [
   {
     "id": 4,
     "title": "Ride It",
-    "artist": "Regard",
-    "album": "Ride It - Single",
-    "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/d1/ff/95/d1ff954f-9662-4b35-b4d6-c4349ccfb6dc/886447846674.jpg/600x600bb.jpg",
-    "audioUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/18/f4/37/18f437f9-baaa-bdc5-b53e-f4a90867381f/mzaf_14711378491207415802.plus.aac.p.m4a",
-    "duration": 60,
-    "durationFormatted": "1:00",
-    "genre": "Dance",
-    "year": 2019
+    "artist": "Jay Sean",
+    "album": "My Own Way",
+    "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/63/32/cb/6332cbab-eafb-f087-c574-3c1239b18a89/5037300757797.jpg/600x600bb.jpg",
+    "audioUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/8f/92/db/8f92db53-be59-838b-b2d5-a594da3aecb6/mzaf_10784619731150079757.plus.aac.p.m4a",
+    "duration": 192,
+    "durationFormatted": "3:12",
+    "genre": "R&B/Soul",
+    "year": 2008
   },
   {
     "id": 5,
