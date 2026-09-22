@@ -13,7 +13,7 @@ import {
 import { useMusic } from "../../context/useMusic";
 import "./MusicSec.css";
 
-const ITEMS_PER_PAGE = 12;
+const ITEMS_PER_PAGE = 18;
 
 const MusicSec = () => {
   const {

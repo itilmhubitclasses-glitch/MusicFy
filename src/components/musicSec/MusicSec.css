@@ -91,6 +91,12 @@
   width: 100%;
 }
 
+@media (min-width: 1024px) {
+  .songs-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+
 .song-card {
   background-color: var(--bg-card);
   border: 1px solid var(--border-subtle);
