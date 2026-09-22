@@ -89,7 +89,7 @@ export const SONGS = [
     "title": "Happy Nation",
     "artist": "Ace of Base",
     "album": "Beautiful Life - The Singles Box",
-    "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/53/79/51/537951b2-76b0-f1a9-2bb8-50625266af7c/cover.jpg/600x600bb.jpg",
+    "cover":"https://upload.wikimedia.org/wikipedia/ru/1/1b/AceofBaseHappyNationAlbumcover.jpg?utm_source=ru.wikipedia.org&utm_campaign=index&utm_content=original",
     "audioUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/d4/af/3c/d4af3c45-3243-8c17-48eb-bdd00cf3b55c/mzaf_7890678429091386873.plus.aac.p.m4a",
     "duration": 60,
     "durationFormatted": "1:00",
