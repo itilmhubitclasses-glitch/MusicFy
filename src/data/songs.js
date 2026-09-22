@@ -181,18 +181,6 @@ export const SONGS = [
     "year": 2000
   },
   {
-    "id": 16,
-    "title": "Unstoppable",
-    "artist": "Sia",
-    "album": "This Is Acting",
-    "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/bc/13/27/bc13275c-8b26-802d-771b-d15ae00fb530/mzm.hvpwjsvi.jpg/600x600bb.jpg",
-    "audioUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/bb/dd/6a/bbdd6a92-b322-1c35-8dc7-8eb7d84f72b8/mzaf_14355345747730153074.plus.aac.p.m4a",
-    "duration": 60,
-    "durationFormatted": "1:00",
-    "genre": "Pop",
-    "year": 2016
-  },
-  {
     "id": 17,
     "title": "Gangsta's Paradise (feat. L.V.)",
     "artist": "Coolio",
