@@ -29,7 +29,7 @@ export const SONGS = [
     "title": "Moulaga",
     "artist": "Heuss L'enfoiré & JUL",
     "album": "En esprit",
-    "cover":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzTg72C71J_kzn72Uf9XOf2OYuiXsPpw0_0gScAZI8wrL5uSW1_uGnz9g&s=10"
+    "cover":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzTg72C71J_kzn72Uf9XOf2OYuiXsPpw0_0gScAZI8wrL5uSW1_uGnz9g&s=10",
     "audioUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/a4/0b/58/a40b58b6-15cb-c19c-25fd-9e658c40e214/mzaf_9576732512498564846.plus.aac.p.m4a",
     "duration": 60,
     "durationFormatted": "1:00",
