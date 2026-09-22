@@ -101,7 +101,7 @@ export const SONGS = [
     "title": "Misery",
     "artist": "Maroon 5",
     "album": "Hands All Over",
-    "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/5f/6e/4c/5f6e4c8b-eba6-f722-caf4-c5773dea7fa1/14UMGIM27067.rgb.jpg/600x600bb.jpg",
+    "cover":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTya77LuXq9ttT7z8H6SbEiHPioqfsRfuqvBQywy63yOw&s",
     "audioUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/10/19/6a/10196a76-dfb7-a00d-7544-799e3a56efec/mzaf_4037683445969678717.plus.aac.p.m4a",
     "duration": 60,
     "durationFormatted": "1:00",
