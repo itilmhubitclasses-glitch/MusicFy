@@ -24,7 +24,6 @@ const Banner = () => {
       <div className="banner-card">
         <div className="banner-left">
           <h2 className="banner-heading">Musiqalar to‘plami</h2>
-          <span className="banner-count">{songs.length} ta sara trek</span>
         </div>
 
         <div className="banner-controls">
