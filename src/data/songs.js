@@ -125,7 +125,7 @@ export const SONGS = [
     "title": "Blinding Lights (Remix)",
     "artist": "The Weeknd & ROSALÍA",
     "album": "Blinding Lights (Remix) - Single",
-    "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/61/e7/3f/61e73f94-018d-5f50-50ec-8521952bc72e/20UM1IM11629.rgb.jpg/600x600bb.jpg",
+    "cover":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDkO8Tg4-yAdTj26IW8as66ARRFRaaoFHqdysARbxtyw&s",
     "audioUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/12/73/ca/1273ca46-233a-5331-189b-25ac1d656533/mzaf_976341070785891411.plus.aac.p.m4a",
     "duration": 60,
     "durationFormatted": "1:00",
