@@ -1,9 +1,10 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Play, Pause, Trash2, ArrowLeft, Disc } from 'lucide-react';
 import { useMusic } from '../context/useMusic';
 import './Likes.css';
 
 const Likes = () => {
+  const navigate = useNavigate();
   const {
     likedSongs,
     currentTrack,
@@ -13,12 +14,17 @@ const Likes = () => {
     toggleLike,
   } = useMusic();
 
-  const handlePlayLiked = (song) => {
+  const handlePlayLiked = (e, song) => {
+    e.stopPropagation();
     if (currentTrack?.id === song.id) {
       togglePlay();
     } else {
       playTrack(song);
     }
+  };
+
+  const handleRowClick = (song) => {
+    navigate(`/track/${song.id}`);
   };
 
   const handlePlayAll = () => {
@@ -36,18 +42,18 @@ const Likes = () => {
 
       <div className="likes-header-card">
         <div className="likes-header-info">
-          <h1 className="likes-title">Yoqtirilgan qo‘shiqlar</h1>
-          <p className="likes-meta">
-            {likedSongs.length} ta trek
-          </p>
+          <h3 className="musicsec-title">Yoqtirilgan qo‘shiqlar</h3>
+          <span className="musicsec-count">
+            {likedSongs.length} ta trek mavjud
+          </span>
           {likedSongs.length > 0 && (
             <button
               type="button"
               onClick={handlePlayAll}
               className="likes-play-all-btn"
             >
-              <Play size={16} fill="currentColor" />
-              <span>Hammasini tinglash</span>
+              <Play size={14} fill="currentColor" />
+              <span>Barchasini tinglash</span>
             </button>
           )}
         </div>
@@ -65,15 +71,15 @@ const Likes = () => {
           </Link>
         </div>
       ) : (
-        <div className="likes-list-wrap">
-          <table className="likes-table">
+        <div className="songs-table-wrap">
+          <table className="songs-table">
             <thead>
               <tr>
                 <th className="th-num">#</th>
-                <th className="th-track">Trek</th>
+                <th className="th-title">Trek</th>
                 <th className="th-album">Albom</th>
                 <th className="th-genre">Janr</th>
-                <th className="th-time">Vaqt</th>
+                <th className="th-duration">Vaqt</th>
                 <th className="th-action"></th>
               </tr>
             </thead>
@@ -85,18 +91,16 @@ const Likes = () => {
                 return (
                   <tr
                     key={song.id}
-                    className={`likes-row ${isCurrent ? 'active' : ''}`}
-                    onClick={() => handlePlayLiked(song)}
+                    className={`song-row ${isCurrent ? 'active' : ''}`}
+                    onClick={() => handleRowClick(song)}
+                    title="Batafsil ma'lumotni ko'rish"
                   >
                     <td className="td-num">
                       <span className="row-num">{index + 1}</span>
                       <button
                         type="button"
                         className="row-play-btn"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handlePlayLiked(song);
-                        }}
+                        onClick={(e) => handlePlayLiked(e, song)}
                       >
                         {isPlayingThis ? (
                           <Pause size={14} fill="currentColor" />
@@ -106,18 +110,21 @@ const Likes = () => {
                       </button>
                     </td>
 
-                    <td className="td-track">
-                      <div className="track-flex">
+                    <td className="td-title">
+                      <div className="td-title-flex">
                         <img
                           src={song.cover}
                           alt={song.title}
-                          className="track-cover"
+                          className="row-cover"
+                          loading="lazy"
                         />
-                        <div className="track-meta">
-                          <span className="track-title">
+                        <div className="row-titles">
+                          <span
+                            className={`row-track-name ${isCurrent ? 'active' : ''}`}
+                          >
                             {song.title}
                           </span>
-                          <span className="track-artist">{song.artist}</span>
+                          <span className="row-artist-name">{song.artist}</span>
                         </div>
                       </div>
                     </td>
@@ -125,10 +132,10 @@ const Likes = () => {
                     <td className="td-album">{song.album}</td>
 
                     <td className="td-genre">
-                      <span className="genre-badge">{song.genre}</span>
+                      <span className="table-genre-tag">{song.genre}</span>
                     </td>
 
-                    <td className="td-time">{song.durationFormatted}</td>
+                    <td className="td-duration">{song.durationFormatted}</td>
 
                     <td className="td-action">
                       <button

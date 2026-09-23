@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import {
   Play,
   Pause,
@@ -61,21 +62,29 @@ const Player = () => {
       <div className="player-container">
         {/* Left: Track Information */}
         <div className="player-track-info">
-          <div className="player-cover-wrap">
+          <Link
+            to={`/track/${currentTrack.id}`}
+            className="player-cover-wrap"
+            title="Trek sahifasiga o'tish"
+          >
             <img
               src={currentTrack.cover}
               alt={currentTrack.title}
               className="player-cover-img"
             />
-          </div>
-          <div className="player-titles">
-            <span className="player-title" title={currentTrack.title}>
+          </Link>
+          <Link
+            to={`/track/${currentTrack.id}`}
+            className="player-titles"
+            title="Trek sahifasiga o'tish"
+          >
+            <span className="player-title">
               {currentTrack.title}
             </span>
-            <span className="player-artist" title={currentTrack.artist}>
+            <span className="player-artist">
               {currentTrack.artist}
             </span>
-          </div>
+          </Link>
           <button
             type="button"
             onClick={() => toggleLike(currentTrack.id)}

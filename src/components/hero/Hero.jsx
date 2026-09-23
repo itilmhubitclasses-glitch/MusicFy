@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { Play, Pause, Heart } from 'lucide-react';
 import { useMusic } from '../../context/useMusic';
 import './Hero.css';
@@ -24,19 +25,21 @@ const Hero = () => {
     <section className="hero-root" aria-label="Tanlangan musiqa">
       <div className="hero-card">
         {/* Cover Art */}
-        <div className="hero-cover-wrap">
+        <Link to={`/track/${featured.id}`} className="hero-cover-wrap" title="Batafsil ko'rish">
           <img
             src={featured.cover}
             alt={featured.title}
             className="hero-cover-img"
           />
-        </div>
+        </Link>
 
         {/* Info Column */}
         <div className="hero-content">
           <span className="hero-sub">Tavsiya etilgan</span>
 
-          <h1 className="hero-title">{featured.title}</h1>
+          <Link to={`/track/${featured.id}`} title="Batafsil ko'rish">
+            <h1 className="hero-title" style={{ cursor: 'pointer' }}>{featured.title}</h1>
+          </Link>
           
           <div className="hero-meta">
             <span className="hero-artist">{featured.artist}</span>

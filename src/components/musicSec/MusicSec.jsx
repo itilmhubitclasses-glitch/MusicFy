@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Play,
   Pause,
@@ -16,6 +17,7 @@ import "./MusicSec.css";
 const ITEMS_PER_PAGE = 18;
 
 const MusicSec = () => {
+  const navigate = useNavigate();
   const {
     filteredSongs,
     currentTrack,
@@ -48,12 +50,17 @@ const MusicSec = () => {
     startIndex + ITEMS_PER_PAGE,
   );
 
-  const handleTrackClick = (song) => {
+  const handlePlayClick = (e, song) => {
+    e.stopPropagation();
     if (currentTrack?.id === song.id) {
       togglePlay();
     } else {
       playTrack(song);
     }
+  };
+
+  const handleOpenDetail = (song) => {
+    navigate(`/track/${song.id}`);
   };
 
   const handlePageChange = (page) => {
@@ -128,7 +135,8 @@ const MusicSec = () => {
               <div
                 key={song.id}
                 className={`song-card ${isCurrent ? "active" : ""}`}
-                onClick={() => handleTrackClick(song)}
+                onClick={() => handleOpenDetail(song)}
+                title="Batafsil ma'lumotni ko'rish"
               >
                 <div className="song-card-cover-wrap">
                   <img
@@ -141,10 +149,7 @@ const MusicSec = () => {
                     type="button"
                     className={`card-play-btn ${isPlayingThis ? "playing" : ""}`}
                     aria-label={isPlayingThis ? "To'xtatish" : "Ijro etish"}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleTrackClick(song);
-                    }}
+                    onClick={(e) => handlePlayClick(e, song)}
                   >
                     {isPlayingThis ? (
                       <Pause size={17} fill="currentColor" />
@@ -216,17 +221,15 @@ const MusicSec = () => {
                   <tr
                     key={song.id}
                     className={`song-row ${isCurrent ? "active" : ""}`}
-                    onClick={() => handleTrackClick(song)}
+                    onClick={() => handleOpenDetail(song)}
+                    title="Batafsil ma'lumotni ko'rish"
                   >
                     <td className="td-num">
                       <span className="row-num">{actualIndex}</span>
                       <button
                         type="button"
                         className="row-play-btn"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleTrackClick(song);
-                        }}
+                        onClick={(e) => handlePlayClick(e, song)}
                       >
                         {isPlayingThis ? (
                           <Pause size={14} fill="currentColor" />

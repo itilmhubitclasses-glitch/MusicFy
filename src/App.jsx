@@ -10,6 +10,7 @@ import Toast from './components/toast/Toast';
 import Home from './pages/Home';
 import Likes from './pages/Likes';
 import About from './pages/About';
+import TrackDetail from './pages/TrackDetail';
 import './App.css';
 
 const AppContent = () => {
@@ -27,6 +28,8 @@ const AppContent = () => {
             <div className="content-inner">
               <Routes>
                 <Route path="/" element={<Home />} />
+                <Route path="/track/:id" element={<TrackDetail />} />
+                <Route path="/song/:id" element={<TrackDetail />} />
                 <Route path="/likes" element={<Likes />} />
                 <Route path="/about" element={<About />} />
               </Routes>
